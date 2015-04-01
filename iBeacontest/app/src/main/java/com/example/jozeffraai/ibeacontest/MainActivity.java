@@ -1,6 +1,5 @@
 package com.example.jozeffraai.ibeacontest;
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
@@ -11,6 +10,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
@@ -25,6 +25,9 @@ public class MainActivity extends ActionBarActivity {
 	private static final Region ALL_ESTIMOTE_BEACONS = new Region("regionId", ESTIMOTE_PROXIMITY_UUID, null, null);
 	private static final String TAG = "mijnTag";
 
+	private TextView tvBeacon;
+	private TextView tvBeacon2;
+
 	private BeaconManager beaconManager = new BeaconManager(this);
 	BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -33,6 +36,9 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		tvBeacon = (TextView) findViewById(R.id.rangeDing);
+		tvBeacon2 = (TextView) findViewById(R.id.rangeDing2);
 
 
 		//enable bluetooth
@@ -47,6 +53,26 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
 				Log.d(TAG, "Ranged beacons: " + beacons);
+
+				tvBeacon2.setText("Er is geen Beacon binnen bereik");
+
+//				if (beacons != null) {
+				for (Beacon b : beacons) {
+//						tvBeacon.setText("Beacon Rssi: " + b.getRssi() +
+//										"\nBeacon Major: " + b.getMajor() +
+//										"\nBeacon Minor: " + b.getMinor() +
+//										"\nBeacon Name: " + b.getName() +
+//										"\nBeacon MAC: " + b.getMacAddress() +
+//										"\nBeacon MeasuredPower: " + b.getMeasuredPower() +
+//										"\nBeacon Proximity:\n" + b.getProximityUUID() +"\n\n\n");
+
+					if (b.getMacAddress().equals("F3:BC:3A:0D:23:24")) {
+						tvBeacon2.setText("De paarse Is binnen bereik");
+					} else if(b.getMacAddress().equals("E5:96:E5:68:D9:A7")){
+						tvBeacon2.setText("De blauwe Is binnen bereik");
+					}
+				}
+//				}
 			}
 		});
 	}
