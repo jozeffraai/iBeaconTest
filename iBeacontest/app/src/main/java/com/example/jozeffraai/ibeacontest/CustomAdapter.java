@@ -25,7 +25,7 @@ public class CustomAdapter extends ArrayAdapter<Beacon> {
 		LayoutInflater customInflater = LayoutInflater.from(getContext());
 		View customView = customInflater.inflate(R.layout.activity_main, parent, false);
 
-		TextView customRowText = (TextView)customView.findViewById(R.id.rangeDing);
+		TextView customRowText = (TextView)customView.findViewById(R.id.tvBeacon1);
 
 		Beacon beacons = mData[position];
 		customRowText.setText(beacons.getRssi());

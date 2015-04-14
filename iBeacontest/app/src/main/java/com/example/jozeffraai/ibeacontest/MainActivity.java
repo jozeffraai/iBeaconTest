@@ -25,8 +25,11 @@ public class MainActivity extends ActionBarActivity {
 	private static final Region ALL_ESTIMOTE_BEACONS = new Region("regionId", ESTIMOTE_PROXIMITY_UUID, null, null);
 	private static final String TAG = "mijnTag";
 
-	private TextView tvBeacon;
-	private TextView tvBeacon2;
+	private static final String STRING_MAC_BLUE_BEACON1= "E5:96:E5:68:D9:A7";
+	private static final String STRING_MAC_BLUE_BEACON2= "D0:89:FA:BD:EB:22";
+	private static final String STRING_MAC_PURPLE_BEACON= "F3:BC:3A:0D:23:24";
+
+	private TextView mTvBeacon1, mTvBeacon2, mTvBeacon3;
 
 	private BeaconManager beaconManager = new BeaconManager(this);
 	BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -37,9 +40,9 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		tvBeacon = (TextView) findViewById(R.id.rangeDing);
-		tvBeacon2 = (TextView) findViewById(R.id.rangeDing2);
-
+		mTvBeacon1 = (TextView) findViewById(R.id.tvBeacon1);
+		mTvBeacon2 = (TextView) findViewById(R.id.tvBeacon2);
+		mTvBeacon3 = (TextView) findViewById(R.id.tvBeacon3);
 
 		//enable bluetooth
 		if (!mBluetoothAdapter.isEnabled()) {
@@ -54,11 +57,13 @@ public class MainActivity extends ActionBarActivity {
 			public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
 				Log.d(TAG, "Ranged beacons: " + beacons);
 
-				tvBeacon2.setText("Er is geen Beacon binnen bereik");
+				mTvBeacon1.setText("Er is geen Beacon binnen bereik");
+				mTvBeacon2.setText("Er is geen Beacon binnen bereik");
+				mTvBeacon3.setText("Er is geen Beacon binnen bereik");
 
 //				if (beacons != null) {
 				for (Beacon b : beacons) {
-//						tvBeacon.setText("Beacon Rssi: " + b.getRssi() +
+//						mTvBeacon.setText("Beacon Rssi: " + b.getRssi() +
 //										"\nBeacon Major: " + b.getMajor() +
 //										"\nBeacon Minor: " + b.getMinor() +
 //										"\nBeacon Name: " + b.getName() +
@@ -66,10 +71,16 @@ public class MainActivity extends ActionBarActivity {
 //										"\nBeacon MeasuredPower: " + b.getMeasuredPower() +
 //										"\nBeacon Proximity:\n" + b.getProximityUUID() +"\n\n\n");
 
-					if (b.getMacAddress().equals("F3:BC:3A:0D:23:24")) {
-						tvBeacon2.setText("De paarse Is binnen bereik");
-					} else if(b.getMacAddress().equals("E5:96:E5:68:D9:A7")){
-						tvBeacon2.setText("De blauwe Is binnen bereik");
+					switch(b.getMacAddress())  {
+						case STRING_MAC_BLUE_BEACON1:
+							mTvBeacon1.setText("Blue 1 in range. RSSI: "+b.getRssi());
+							break;
+						case STRING_MAC_BLUE_BEACON2:
+							mTvBeacon2.setText("Blue 2 in range. RSSI: "+b.getRssi());
+							break;
+						case STRING_MAC_PURPLE_BEACON:
+							mTvBeacon3.setText("Purple in range. RSSI: "+b.getRssi());
+							break;
 					}
 				}
 //				}
